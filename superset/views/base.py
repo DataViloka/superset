@@ -85,7 +85,6 @@ FRONTEND_CONF_KEYS = (
 )
 logger = logging.getLogger(__name__)
 
-logger = logging.getLogger(__name__)
 config = superset_app.config
 
 

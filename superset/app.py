@@ -131,6 +131,7 @@ class SupersetAppInitializer:
         from superset.async_events.api import AsyncEventsRestApi
         from superset.cachekeys.api import CacheRestApi
         from superset.charts.api import ChartRestApi
+
         from superset.connectors.druid.views import (
             Druid,
             DruidClusterModelView,
@@ -166,6 +167,8 @@ class SupersetAppInitializer:
         )
         from superset.views.api import Api
         from superset.views.chart.views import SliceAsync, SliceModelView
+        from superset.views.streams.views import SliceAsync1, SliceModelView1
+
         from superset.views.core import Superset
         from superset.views.css_templates import (
             CssTemplateAsyncModelView,
@@ -268,6 +271,14 @@ class SupersetAppInitializer:
             category="",
             category_icon="",
         )
+        appbuilder.add_view(
+            SliceModelView1,
+            "Streams",
+            label=__("Streams"),
+            icon="fa-bar-chart",
+            category="",
+            category_icon="",
+        )
         if feature_flag_manager.is_feature_enabled("DYNAMIC_PLUGINS"):
             appbuilder.add_view(
                 DynamicPluginsView,
@@ -314,6 +325,7 @@ class SupersetAppInitializer:
         appbuilder.add_view_no_menu(SavedQueryView)
         appbuilder.add_view_no_menu(SavedQueryViewApi)
         appbuilder.add_view_no_menu(SliceAsync)
+        appbuilder.add_view_no_menu(SliceAsync1)
         appbuilder.add_view_no_menu(SqlLab)
         appbuilder.add_view_no_menu(SqlMetricInlineView)
         appbuilder.add_view_no_menu(AnnotationModelView)
