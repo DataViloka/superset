@@ -131,6 +131,7 @@ class SupersetAppInitializer:
         from superset.async_events.api import AsyncEventsRestApi
         from superset.cachekeys.api import CacheRestApi
         from superset.charts.api import ChartRestApi
+        from superset.streams.api import ChartRestApi1
 
         from superset.connectors.druid.views import (
             Druid,
@@ -211,6 +212,7 @@ class SupersetAppInitializer:
         appbuilder.add_api(AsyncEventsRestApi)
         appbuilder.add_api(CacheRestApi)
         appbuilder.add_api(ChartRestApi)
+        appbuilder.add_api(ChartRestApi1)
         appbuilder.add_api(CssTemplateRestApi)
         appbuilder.add_api(DashboardRestApi)
         appbuilder.add_api(DatabaseRestApi)
@@ -638,7 +640,7 @@ class SupersetAppInitializer:
                     self, environ: Dict[str, Any], start_response: Callable[..., Any]
                 ) -> Any:
                     # Setting wsgi.input_terminated tells werkzeug.wsgi to ignore
-                    # content-length and read the stream till the end.
+                    # content-length and read the streams till the end.
                     if environ.get("HTTP_TRANSFER_ENCODING", "").lower() == "chunked":
                         environ["wsgi.input_terminated"] = True
                     return self.app(environ, start_response)

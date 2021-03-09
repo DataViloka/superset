@@ -88,10 +88,10 @@ from superset.views.filters import FilterRelatedOwners
 logger = logging.getLogger(__name__)
 
 
-class ChartRestApi(BaseSupersetModelRestApi):
+class ChartRestApi1(BaseSupersetModelRestApi):
     datamodel = SQLAInterface(Slice)
 
-    resource_name = "stream"
+    resource_name = "streams"
     allow_browser_login = True
 
     include_route_methods = RouteMethod.REST_MODEL_VIEW_CRUD_SET | {
@@ -710,7 +710,7 @@ class ChartRestApi(BaseSupersetModelRestApi):
         screenshot_obj = ChartScreenshot(chart_url, chart.digest)
         cache_key = screenshot_obj.cache_key(window_size, thumb_size)
         image_url = get_url_path(
-            "ChartRestApi.screenshot", pk=chart.id, digest=cache_key
+            "ChartRestApi1.screenshot", pk=chart.id, digest=cache_key
         )
 
         def trigger_celery() -> WerkzeugResponse:

@@ -40,7 +40,7 @@ from superset.views.utils import bootstrap_user_data
 class SliceModelView1(
     SliceMixin1, SupersetModelView, DeleteMixin
 ):  # pylint: disable=too-many-ancestors
-    route_base = "/stream"
+    route_base = "/streams"
     datamodel = SQLAInterface(Slice)
     include_route_methods = RouteMethod.CRUD_SET | {
         RouteMethod.DOWNLOAD,
@@ -73,7 +73,7 @@ class SliceModelView1(
             "user": bootstrap_user_data(g.user),
         }
         return self.render_template(
-            "superset/add_slice.html", bootstrap_data=json.dumps(payload)
+            "superset/add_slice1.html", bootstrap_data=json.dumps(payload)
         )
 
     @expose("/list/")

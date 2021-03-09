@@ -45,6 +45,12 @@ const ChartList = lazy(
       /* webpackChunkName: "ChartList" */ 'src/views/CRUD/chart/ChartList'
     ),
 );
+const ChartList1 = lazy(
+  () =>
+    import(
+      /* webpackChunkName: "ChartList" */ 'src/views/CRUD/streams/ChartList'
+    ),
+);
 const CssTemplatesList = lazy(
   () =>
     import(
@@ -107,6 +113,10 @@ export const routes: Routes = [
   {
     path: '/chart/list/',
     Component: ChartList,
+  },
+  {
+    path: '/streams/list/',
+    Component: ChartList1,
   },
   {
     path: '/tablemodelview/list/',

@@ -37,7 +37,7 @@ class ImportChartsCommand(ImportModelsCommand):
     """Import charts"""
 
     dao = ChartDAO
-    model_name = "stream"
+    model_name = "streams"
     prefix = "streams/"
     schemas: Dict[str, Schema] = {
         "streams/": ImportV1ChartSchema(),
