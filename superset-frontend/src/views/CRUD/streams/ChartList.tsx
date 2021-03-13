@@ -483,7 +483,7 @@ function ChartList(props: ChartListProps) {
   ];
   return (
     <>
-      <SubMenu name={t('Streams')}/>
+      <SubMenu name={t('Streams')} buttons={subMenuButtons} />
       {sliceCurrentlyEditing && (
         <PropertiesModal
           onHide={closeChartEditModal}
