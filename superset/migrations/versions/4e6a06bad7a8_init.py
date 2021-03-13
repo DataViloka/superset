@@ -196,6 +196,25 @@ def upgrade():
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
+        "streams",
+        sa.Column("created_on", sa.DateTime(), nullable=False),
+        sa.Column("changed_on", sa.DateTime(), nullable=False),
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("stream_name", sa.String(length=250), nullable=True),
+        sa.Column("params", sa.Text(), nullable=True),
+        sa.Column("description", sa.Text(), nullable=True),
+        sa.Column("token", sa.String(length=64), nullable=True),
+        sa.Column("uuid", sa.Numeric(), nullable=True),
+        sa.Column(
+            "created_by_fk", sa.Integer(), sa.ForeignKey("ab_user.id"), nullable=True
+        ),
+        sa.Column(
+            "changed_by_fk", sa.Integer(), sa.ForeignKey("ab_user.id"), nullable=True
+        ),
+        sa.PrimaryKeyConstraint("id"),
+        sa.UniqueConstraint("uuid"),
+    )
+    op.create_table(
         "sql_metrics",
         sa.Column("created_on", sa.DateTime(), nullable=False),
         sa.Column("changed_on", sa.DateTime(), nullable=False),

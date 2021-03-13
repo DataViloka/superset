@@ -164,7 +164,7 @@ function ChartList(props: ChartListProps) {
 
   function handleBulkChartDelete(chartsToDelete: Chart[]) {
     SupersetClient.delete({
-      endpoint: `/api/v1/chart/?q=${rison.encode(
+      endpoint: `/api/v1/streams/?q=${rison.encode(
         chartsToDelete.map(({ id }) => id),
       )}`,
     }).then(
@@ -215,11 +215,11 @@ function ChartList(props: ChartListProps) {
       {
         Cell: ({
           row: {
-            original: { viz_type: vizType },
+            original: { description: description },
           },
-        }: any) => registry.get(vizType)?.name || vizType,
+        }: any) => description,
         Header: t('Description'),
-        accessor: 'viz_type',
+        accessor: 'description',
         disableSortBy: true,
         size: 'xxl',
       },
@@ -227,13 +227,37 @@ function ChartList(props: ChartListProps) {
         Cell: ({
           row: {
             original: {
-              datasource_name_text: dsNameTxt,
-              datasource_url: dsUrl,
+              token: token,
             },
           },
-        }: any) => <a href={dsUrl}>{dsNameTxt}</a>,
+        }: any) => token,
         Header: t('Token'),
-        accessor: 'datasource_id',
+        accessor: 'token',
+        disableSortBy: true,
+        size: 'xl',
+      },
+      {
+        Cell: ({
+          row: {
+            original: {
+              stream_url: stream_url,
+            },
+          },
+        }: any) => <a href={stream_url}>{stream_url}</a>,
+        Header: t('Url'),
+        accessor: 'stream_url',
+        disableSortBy: true,
+        size: 'xl',
+      },
+      {
+        Cell: ({
+          row: {
+            original: { created_by: createdBy },
+          },
+        }: any) =>
+          createdBy ? `${createdBy.first_name} ${createdBy.last_name}` : '',
+        Header: t('Created by'),
+        accessor: 'created_by',
         disableSortBy: true,
         size: 'xl',
       },
@@ -264,18 +288,6 @@ function ChartList(props: ChartListProps) {
         accessor: 'owners',
         hidden: true,
         disableSortBy: true,
-      },
-      {
-        Cell: ({
-          row: {
-            original: { created_by: createdBy },
-          },
-        }: any) =>
-          createdBy ? `${createdBy.first_name} ${createdBy.last_name}` : '',
-        Header: t('Created by'),
-        accessor: 'created_by',
-        disableSortBy: true,
-        size: 'xl',
       },
       {
         Cell: ({ row: { original } }: any) => {
@@ -405,14 +417,14 @@ function ChartList(props: ChartListProps) {
     );
   }
   const subMenuButtons: SubMenuProps['buttons'] = [];
-  if (canDelete || canExport) {
-    subMenuButtons.push({
-      name: t('Bulk select'),
-      buttonStyle: 'secondary',
-      'data-test': 'bulk-select',
-      onClick: toggleBulkSelect,
-    });
-  }
+//   if (canDelete || canExport) {
+//     subMenuButtons.push({
+//       name: t('Bulk select'),
+//       buttonStyle: 'secondary',
+//       'data-test': 'bulk-select',
+//       onClick: toggleBulkSelect,
+//     });
+//   }
   if (canCreate) {
     subMenuButtons.push({
       name: (
@@ -433,9 +445,45 @@ function ChartList(props: ChartListProps) {
       onClick: openChartImportModal,
     });
   }
+  const charts1 = [
+    {
+      changed_by_name: false,
+      changed_by_url: '',
+      changed_by: {
+      first_name: 'srikanth',
+      id: 1,
+      last_name: 'kopparthy',
+      },
+      created_by: {
+      first_name: 'srikanth',
+      id: 1,
+      last_name: 'kopparthy',
+      },
+      cache_timeout: null,
+      changed_on_delta_humanized: '',
+      changed_on_utc: '2021-03-11T19:06:30.494568+0000',
+      slice_name: 'web-traffic-stream',
+      description: 'to monitor web traffic',
+      url: 'https://84cd2an68l.execute-api.ap-south-1.amazonaws.com/Prod',
+      viz_type: 'big_number',
+      id: 1,
+      owners: [
+      {
+      first_name: 'srikanth',
+      id: 1,
+      last_name: 'kopparthy',
+      username: 'srikanth',
+      },
+      ],
+      creator: 'srikanth',
+      changed_on: '',
+      stream_url: 'https://84cd2an68l.execute-api.ap-south-1.amazonaws.com/Prod',
+      token: 'dGVzdC10b2tlbg==',
+    },
+  ];
   return (
     <>
-      <SubMenu name={t('Streams')} buttons={subMenuButtons} />
+      <SubMenu name={t('Streams')}/>
       {sliceCurrentlyEditing && (
         <PropertiesModal
           onHide={closeChartEditModal}
@@ -470,13 +518,13 @@ function ChartList(props: ChartListProps) {
           return (
             <ListView<Chart>
               bulkActions={bulkActions}
-              bulkSelectEnabled={bulkSelectEnabled}
+//              bulkSelectEnabled={bulkSelectEnabled}
               cardSortSelectOptions={sortTypes}
               className="chart-list-view"
               columns={columns}
               count={chartCount}
-              data={charts}
-              disableBulkSelect={toggleBulkSelect}
+              data={charts1}
+//              disableBulkSelect={toggleBulkSelect}
               fetchData={fetchData}
 //               filters={filters}
               initialSort={initialSort}
@@ -494,8 +542,8 @@ function ChartList(props: ChartListProps) {
       </ConfirmStatusChange>
 
       <ImportModelsModal
-        resourceName="chart"
-        resourceLabel={t('chart')}
+        resourceName="stream"
+        resourceLabel={t('stream')}
         passwordsNeededMessage={PASSWORDS_NEEDED_MESSAGE}
         confirmOverwriteMessage={CONFIRM_OVERWRITE_MESSAGE}
         addDangerToast={addDangerToast}

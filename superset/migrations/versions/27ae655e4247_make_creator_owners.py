@@ -53,6 +53,14 @@ slice_user = Table(
     Column("slice_id", Integer, ForeignKey("slices.id")),
 )
 
+stream_user = Table(
+    "stream_user",
+    Base.metadata,
+    Column("id", Integer, primary_key=True),
+    Column("user_id", Integer, ForeignKey("ab_user.id")),
+    Column("stream_id", Integer, ForeignKey("streams.id")),
+)
+
 dashboard_user = Table(
     "dashboard_user",
     Base.metadata,
@@ -68,6 +76,14 @@ class Slice(Base, AuditMixin):
     __tablename__ = "slices"
     id = Column(Integer, primary_key=True)
     owners = relationship("User", secondary=slice_user)
+
+
+class Stream(Base, AuditMixin):
+    """Declarative class to do query in upgrade"""
+
+    __tablename__ = "streams"
+    id = Column(Integer, primary_key=True)
+    owners = relationship("User", secondary=stream_user)
 
 
 class Dashboard(Base, AuditMixin):

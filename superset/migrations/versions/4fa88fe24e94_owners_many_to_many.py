@@ -48,8 +48,18 @@ def upgrade():
         sa.ForeignKeyConstraint(["user_id"], ["ab_user.id"]),
         sa.PrimaryKeyConstraint("id"),
     )
+    op.create_table(
+        "stream_user",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("user_id", sa.Integer(), nullable=True),
+        sa.Column("stream_id", sa.Integer(), nullable=True),
+        sa.ForeignKeyConstraint(["stream_id"], ["streams.id"]),
+        sa.ForeignKeyConstraint(["user_id"], ["ab_user.id"]),
+        sa.PrimaryKeyConstraint("id"),
+    )
 
 
 def downgrade():
     op.drop_table("slice_user")
+    op.drop_table("stream_user")
     op.drop_table("dashboard_user")
